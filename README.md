@@ -34,6 +34,8 @@
 <br>
 <p>&#10004;&#65039; 9. Write a Dockerfile for the main server.</p>
 <p>&#10004;&#65039; 10. Write a docker-compose file to run the server container along with the database and nginx. For nginx, use the config/nginx.conf config file. If necessary, the config file can be edited.</p>
+<p>&#10004;&#65039; In config/_application-prod.yaml correct <br>
+<i>url: jdbc:postgresql://db:5432/jira</i></p>
 <img src="resources/images/9_1.jpg"/>
 <br>
 <img src="resources/images/9_2.jpg"/>
