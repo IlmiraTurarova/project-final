@@ -40,10 +40,14 @@
 <br>
 <p>&#10004;&#65039; 11. Add localization in at least two languages for letter templates (mails) and index.html start page.</p>
 <img src="resources/images/11_1.jpg"/>
+<div align="center"><b>Before</b></div>
 <br>
 <img src="resources/images/11_2.jpg"/>
+<div align="center"><b>After</b></div>
 <br>
 <img src="resources/images/11_3.jpg"/>
+<div align="center"><b>After</b></div>
 <br>
 <img src="resources/images/11_4.jpg"/>
+<div align="center"><b>After</b></div>
 
