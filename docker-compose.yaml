@@ -1,53 +1,43 @@
 ﻿version: "3.9"
 
+volumes:
+  pgdata:
+    name: pgdata
 services:
-
+  jira:
+    image: jira-app
+    container_name: jira
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: Dockerfile-local-build
+    depends_on:
+      - nginx
+      - db
+    env_file:
+      - config/jira-app-prod.env
   nginx:
     container_name: nginx
-    image: nginx:1.24
+    image: nginx:1.13
+    restart: always
     ports:
       - "80:80"
     volumes:
-      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./resources/static:/opt/jirarush/resources/static:ro
-    depends_on:
-      - jira
-    restart: always
-
-  jira:
-    image: jira-prod-img
-    container_name: jira-prod
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      DB_USERNAME: jira
-      DB_PASSWORD: JiraRush
-      GITHUB_CLIENT_ID: 3d0d8738e65881fff266
-      GITHUB_CLIENT_SECRET: 0f97031ce6178b7dfb67a6af587f37e222a16120
-      GOOGLE_CLIENT_ID: 329113642700-f8if6pu68j2repq3ef6umd5jgiliup60.apps.googleusercontent.com
-      GOOGLE_CLIENT_SECRET: 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
-      GITLAB_CLIENT_ID: b8520a3266089063c0d8261cce36971defa513f5ffd9f9b7a3d16728fc83a494
-      GITLAB_CLIENT_SECRET: e72c65320cf9d6495984a37b0f9cc03ec46be0bb6f071feaebbfe75168117004
-      MAIL_USERNAME: jira4jr@gmail.com
-      MAIL_PASSWORD: zdfzsrqvgimldzyj
-    expose:
-      - "8080"
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    restart: always
-
+      - ./config/nginx.conf:/etc/nginx/conf.d/nginx.conf
   db:
     image: postgres:15.2
-    container_name: jira-postgres-db
+    container_name: db
+    env_file:
+      - config/postgresql-prod.env
     ports:
       - "5432:5432"
     volumes:
-      - ./pg-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: jira
-      POSTGRES_USER: jira
-      POSTGRES_PASSWORD: JiraRush
-    restart: always
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U jira -d jira" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped

@@ -31,7 +31,9 @@ spring:
         # https://stackoverflow.com/questions/21257819/what-is-the-difference-between-hibernate-jdbc-fetch-size-and-hibernate-jdbc-batc
         jdbc.batch_size: 20
   datasource:
-    url: ${spring.datasource.url}
+    #url: ${spring.datasource.url}
+    #for docker
+    url: jdbc:postgresql://db:5432/jira
     username: ${spring.datasource.username}
     password: ${spring.datasource.password}
 
